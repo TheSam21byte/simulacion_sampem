@@ -1,11 +1,42 @@
 import { Card, Form, Button } from "react-bootstrap";
 import "./Login.css"; // Archivo CSS para el gradiente de fondo
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+const users =  [
+  {
+    id: 1,
+    nombre: "Juan",
+    apellido1: "Pérez",
+    apellido2: "López",
+    email: "admin1@example",
+    password: "123",
+    rol: "DE_SA",
+  },
+  {
+    id: 2,
+    nombre: "Ana",
+    apellido1: "García",
+    apellido2: "Martínez",
+    email: "admin2@example",
+    password: "123",
+    rol: "DE_PS",
+  },
+  {
+    id: 3,
+    nombre: "Luis",
+    apellido1: "Rodríguez",
+    apellido2: "Fernández",
+    email: "admin3@example",
+    password: "123",
+    rol: "DE_IS",
+  },
+];
 
 
 const Login = () => {
 
-    const navigate = useNavigate(); // Hook para navegar a otras páginas
+  const navigate = useNavigate(); // Hook para navegar a otras páginas
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -13,10 +44,54 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
+    const user = users.find(
+      (u) => u.email == email && u.password == password
+    );
+
+    if(!user){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      });
+      return;
+    };
+
+    if(user.rol == "DE_SA"){
+
+      Swal.fire({
+        title: "Drag me!",
+        icon: "success",
+        draggable: true
+      });
+      navigate("/dashboard/sa");
+
+    }
+
+    if(user.rol =="DE_PS"){
+      Swal.fire({
+        title: "Bienvenido Promoción de la Salud",
+        icon: "success",
+        draggable: true
+      });
+      navigate("/dashboard/ps");
+    }
+
+    if(user.rol =="DE_IS"){
+      Swal.fire({
+        title: "Bienvenido Inteligencia Sanitaria",
+        icon: "success",
+        draggable: true
+      });
+      navigate("/dashboard/ps");
+    }
+
+
+
     console.log("Datos enviados:", { email, password });
     // Aquí puedes añadir lógica para enviar datos a una API
     
-    navigate("/dashboard"); // Navegar a la página de dashboard
+    navigate("/dashboard/sa"); // Navegar a la página de dashboard
 
 };
 
